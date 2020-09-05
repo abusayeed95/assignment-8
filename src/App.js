@@ -1,11 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './Components/Home/Home';
+import NotFound from './NotFound/NotFound';
+import PostDetails from './Components/PostDetails/PostDetails';
+import Navigation from './Components/Navigation/Navigation';
+
 
 function App() {
   return (
-    <>
-    </>
+    <Router>
+      <Navigation />
+      <Switch>
+        <Route path="/home">
+          <Home />
+        </Route>
+        <Route path="/post/:postId">
+          <PostDetails />
+        </Route>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="*">
+          <NotFound />
+        </Route>
+      </Switch>
+    </Router>
+
   );
 }
 
