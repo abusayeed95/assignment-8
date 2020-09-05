@@ -6,7 +6,7 @@ import Comments from '../Comments/Comments';
 
 const PostDetails = () => {
     const { postId } = useParams();
-    const [showComments, setShowComments] = useState(false);
+    const [toggleComments, setToggleComments] = useState(false);
     const [post, setPost] = useState([]);
     useEffect(() => {
         const URL = `https://jsonplaceholder.typicode.com/posts/${postId}`
@@ -32,41 +32,37 @@ const PostDetails = () => {
     };
 
 
-    const toggleCommentShow = () => {
-        setShowComments(true)
-    };
-    const toggleCommentHide = () => {
-        setShowComments(false)
-    }
-    let commentsArea;
-    if (showComments) {
-        commentsArea = <Grid container>
-            <Grid item xs={1} />
-            <Grid item xs={10} style={postStyle}>
-                {
-                    comment.map(cmt => <Comments comment={cmt} key={cmt.id}></Comments>)
-                }
-                <Button onClick={toggleCommentHide} color="primary" variant="contained" >Hide comments</Button>
-            </Grid>
-            <Grid item xs={1} />
-        </Grid>
+    const toggleComment = () => {
+        setToggleComments(!toggleComments)
     };
 
-    return (
-        <Grid container>
-            <Grid item xs={1} />
-            <Grid item xs={10} style={postStyle}>
-                <h3>{title}</h3>
-                <p><small>Post No: {id}</small></p>
-                <p><small>User ID: {userId}</small></p>
-                <p>{body}</p>
-                <Button color="primary" variant="contained" onClick={toggleCommentShow}>Show Comments</Button>
-            </Grid>
-            <Grid item xs={1} />
+    let commentsArea;
+    if (toggleComments) {
+        commentsArea = <>
             {
-                commentsArea
+                comment.map(cmt => <Comments comment={cmt} key={cmt.id}></Comments>)
             }
-        </Grid>
+        </>
+    };
+    const img = `https://randomuser.me/api/portraits/men/${id}.jpg`
+
+    return (
+        <Grid container spacing={3}>
+            <Grid item container xs={12} style={postStyle}>
+                <Grid item xs={3}>
+                    <img style={{ width: "100%", borderRadius: "50%" }} src={img} alt="" />
+                </Grid>
+                <Grid item xs={1} />
+                <Grid item xs={8}>
+                    <h3>{title}</h3>
+                    <p><small>Post No: {id}</small></p>
+                    <p><small>User ID: {userId}</small></p>
+                    <p>{body}</p>
+                    <Button color="primary" variant="contained" onClick={toggleComment}>Toggle Comments</Button>
+                </Grid>
+            </Grid>
+            {commentsArea}
+        </Grid >
     );
 };
 
